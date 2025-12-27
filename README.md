@@ -20,7 +20,7 @@
         <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
             <h1 class="text-2xl font-bold flex items-center gap-2"><i class="fas fa-clover"></i> Bolão</h1>
             <input type="text" id="searchInput" placeholder="Pesquisar por nome ou dezenas (ex: 1020 ou 10 20)..." class="w-full md:w-1/2 p-2 rounded text-gray-800 focus:outline-none">
-            <button onclick="toggleAdminPanel()" class="bg-green-500 px-3 py-1 rounded text-xs border border-green-400">Admin</button>
+            <button onclick="toggleAdminPanel()" class="bg-green-800 px-3 py-1 rounded text-xs border border-green-600">Admin</button>
         </div>
     </nav>
 
