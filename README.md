@@ -18,13 +18,13 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen pb-10">
+<body class="bg-gray-100 min-h-screen pb-10 text-gray-800">
 
-    <nav class="bg-green-700 text-white p-2 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto flex items-center gap-3">
-            <h1 class="text-lg font-bold flex items-center gap-1 shrink-0"><i class="fas fa-clover text-sm"></i> Bolão</h1>
-            <input type="text" id="searchInput" placeholder="Pesquisar..." class="flex-1 p-1.5 text-sm rounded text-gray-800 focus:outline-none h-8">
-            <button onclick="toggleAdminPanel()" class="bg-green-800 px-2 py-1 rounded text-[10px] border border-green-600 uppercase">Admin</button>
+    <nav class="bg-green-700 text-white p-1 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto flex items-center gap-2">
+            <h1 class="text-base font-bold flex items-center gap-1 shrink-0"><i class="fas fa-clover text-xs"></i> Bolão</h1>
+            <input type="text" id="searchInput" placeholder="Pesquisar..." class="flex-1 p-1 px-2 text-xs rounded text-gray-800 focus:outline-none h-7">
+            <button onclick="toggleAdminPanel()" class="bg-green-800 px-2 py-0.5 rounded text-[9px] border border-green-600 uppercase">Admin</button>
         </div>
     </nav>
 
@@ -40,18 +40,18 @@
         </div>
     </div>
 
-    <div class="container mx-auto mt-2 px-2">
-        <div class="bg-white p-2 rounded-lg shadow-sm grid grid-cols-4 gap-1 text-center font-bold text-xs">
-            <div class="bg-gray-100 p-1 rounded border border-gray-300 text-gray-600"><div class="text-[8px] uppercase">Part.</div><span id="countTotal">0</span></div>
-            <div class="bg-green-50 p-1 rounded border border-green-500 text-green-700"><div class="text-[8px] uppercase">Sena</div><span id="countSena">0</span></div>
-            <div class="bg-yellow-50 p-1 rounded border border-yellow-500 text-yellow-700"><div class="text-[8px] uppercase">Quina</div><span id="countQuina">0</span></div>
-            <div class="bg-blue-50 p-1 rounded border border-blue-500 text-blue-700"><div class="text-[8px] uppercase">Quadra</div><span id="countQuadra">0</span></div>
+    <div class="container mx-auto mt-1 px-2">
+        <div class="bg-white p-1 rounded-lg shadow-sm grid grid-cols-4 gap-1 text-center font-bold text-[10px]">
+            <div class="bg-gray-100 p-0.5 rounded border border-gray-300 text-gray-600"><div class="text-[7px] uppercase">Part.</div><span id="countTotal">0</span></div>
+            <div class="bg-green-50 p-0.5 rounded border border-green-500 text-green-700"><div class="text-[7px] uppercase text-green-600">Sena</div><span id="countSena">0</span></div>
+            <div class="bg-yellow-50 p-0.5 rounded border border-yellow-500 text-yellow-700"><div class="text-[7px] uppercase text-yellow-600">Quina</div><span id="countQuina">0</span></div>
+            <div class="bg-blue-50 p-0.5 rounded border border-blue-500 text-blue-700"><div class="text-[7px] uppercase text-blue-600">Quadra</div><span id="countQuadra">0</span></div>
         </div>
     </div>
 
-    <div id="mainDrawDisplay" class="container mx-auto mt-2 px-2 hidden">
-        <div class="bg-white p-2 rounded-lg shadow-sm border-l-4 border-green-600 flex items-center justify-between">
-            <span class="text-green-800 text-[9px] font-black uppercase tracking-tighter w-12 leading-none">Sorteio Oficial:</span>
+    <div id="mainDrawDisplay" class="container mx-auto mt-1.5 px-2 hidden">
+        <div class="bg-white p-1.5 rounded-lg shadow-sm border-l-4 border-green-600 flex items-center justify-between">
+            <span class="text-green-800 text-[8px] font-black uppercase tracking-tighter w-10 leading-none">Resultado Oficial:</span>
             <div id="displayBalls" class="flex gap-1.5 flex-1 justify-center">
                 </div>
         </div>
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div class="container mx-auto mt-3 px-2">
+    <div class="container mx-auto mt-2 px-2">
         <div id="loading" class="text-center py-5 text-gray-500"><i class="fas fa-spinner fa-spin"></i></div>
         <div id="betsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2"></div>
     </div>
@@ -196,7 +196,7 @@
             if (currentDraw.length > 0) {
                 mainDrawDisplay.classList.remove('hidden');
                 displayBalls.innerHTML = currentDraw.map(n => `
-                    <span class="draw-ball w-7 h-7 flex items-center justify-center rounded-full text-white text-xs font-bold border border-green-400">
+                    <span class="draw-ball w-6 h-6 flex items-center justify-center rounded-full text-white text-[10px] font-bold border border-green-400">
                         ${n.toString().padStart(2, '0')}
                     </span>
                 `).join('');
@@ -244,7 +244,7 @@
                             </div>
                         </div>`;
                 }).join('');
-                card.innerHTML = `<h3 class="font-bold text-gray-700 text-xs border-b mb-1.5 pb-0.5 truncate">${p.name}</h3>${betsHtml}`;
+                card.innerHTML = `<h3 class="font-bold text-gray-700 text-xs border-b mb-1 pb-0.5 truncate">${p.name}</h3>${betsHtml}`;
                 container.appendChild(card);
             });
             document.getElementById('countSena').innerText = stats.sena;
