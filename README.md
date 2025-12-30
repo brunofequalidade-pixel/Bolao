@@ -10,12 +10,12 @@
         .sena-bg { background-color: #dcfce7; border: 2px solid #16a34a; }
         .quina-bg { background-color: #fef9c3; border: 2px solid #ca8a04; }
         .quadra-bg { background-color: #dbeafe; border: 2px solid #2563eb; }
-        .duplicate-bg { background-color: #fee2e2; border: 2px solid #ef4444; } /* Novo estilo para duplicados */
+        .duplicate-bg { background-color: #fee2e2; border: 2px solid #ef4444; }
         .hit-number { background-color: #16a34a; color: white; font-weight: bold; border-color: #16a34a; }
         /* Estilo para as bolas do sorteio principal */
         .draw-ball { 
             background: radial-gradient(circle at 30% 30%, #22c55e, #15803d);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), inset -2px -2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06), inset -1px -1px 2px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -50,10 +50,10 @@
         </div>
     </div>
 
-    <div id="mainDrawDisplay" class="container mx-auto mt-6 px-4 hidden">
-        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-600 text-center">
-            <h2 class="text-green-700 text-xs font-black uppercase tracking-widest mb-4">Resultado do Sorteio</h2>
-            <div id="displayBalls" class="flex flex-wrap justify-center gap-3">
+    <div id="mainDrawDisplay" class="container mx-auto mt-4 px-4 hidden">
+        <div class="bg-white p-3 rounded-lg shadow-sm border-t-4 border-green-600 text-center">
+            <h2 class="text-green-700 text-[10px] font-black uppercase tracking-widest mb-2">Resultado do Sorteio</h2>
+            <div id="displayBalls" class="flex flex-wrap justify-center gap-2">
                 </div>
         </div>
     </div>
@@ -245,11 +245,11 @@
             
             container.innerHTML = '';
             
-            // ACRESCENTADO: Lógica para mostrar as dezenas sorteadas no topo
+            // ALTERADO: Lógica para mostrar as dezenas com bolas menores
             if (currentDraw && currentDraw.length > 0) {
                 mainDrawDisplay.classList.remove('hidden');
                 displayBalls.innerHTML = currentDraw.map(n => `
-                    <span class="draw-ball w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full text-white text-xl font-bold shadow-lg border-2 border-green-400">
+                    <span class="draw-ball w-10 h-10 flex items-center justify-center rounded-full text-white font-bold shadow border-2 border-green-400">
                         ${n.toString().padStart(2, '0')}
                     </span>
                 `).join('');
