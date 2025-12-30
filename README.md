@@ -22,11 +22,9 @@
 
     <nav class="bg-green-700 text-white p-1 shadow-md sticky top-0 z-50">
         <div class="container mx-auto flex items-center gap-2">
-            <div class="flex-1 flex items-center bg-white rounded h-7 px-2">
-                <i class="fas fa-search text-gray-400 text-xs mr-2"></i>
-                <input type="text" id="searchInput" placeholder="Pesquisar nome ou números..." class="w-full text-xs text-gray-800 focus:outline-none bg-transparent">
-            </div>
-            <button onclick="toggleAdminPanel()" class="bg-green-800 px-2 py-1 rounded text-[9px] border border-green-600 uppercase font-bold">Admin</button>
+            <h1 class="text-base font-bold flex items-center gap-1 shrink-0"><i class="fas fa-clover text-xs"></i> Bolão</h1>
+            <input type="text" id="searchInput" placeholder="Pesquisar..." class="flex-1 p-1 px-2 text-xs rounded text-gray-800 focus:outline-none h-7">
+            <button onclick="toggleAdminPanel()" class="bg-green-800 px-2 py-0.5 rounded text-[9px] border border-green-600 uppercase">Admin</button>
         </div>
     </nav>
 
@@ -54,7 +52,7 @@
     <div id="mainDrawDisplay" class="container mx-auto mt-1.5 px-2 hidden">
         <div class="bg-white p-1.5 rounded-lg shadow-sm border-l-4 border-green-600 flex items-center justify-between">
             <span class="text-green-800 text-[8px] font-black uppercase tracking-tighter w-10 leading-none">Resultado Oficial:</span>
-            <div id="displayBalls" class="flex gap-1 flex-1 justify-center">
+            <div id="displayBalls" class="flex gap-1.5 flex-1 justify-center">
                 </div>
         </div>
     </div>
@@ -114,7 +112,8 @@
         };
 
         window.checkPassword = () => {
-            if (document.getElementById('adminPassword').value === 'bolao2025') {
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'bolao2025') {
                 isAdminAuthenticated = true;
                 closePasswordModal();
                 document.getElementById('adminPanel').classList.remove('hidden');
@@ -126,7 +125,7 @@
         function parseNumbersFromLine(row) {
             let allNumbers = [];
             for (let i = 1; i < row.length; i++) {
-                if (row[i]) {
+                if (row[i] !== null && row[i] !== undefined && row[i] !== '') {
                     const nums = row[i].toString().match(/\d+/g);
                     if (nums) allNumbers.push(...nums.map(n => parseInt(n, 10)));
                 }
@@ -231,14 +230,14 @@
                 let betsHtml = p.bets.map((bet, idx) => {
                     const nums = bet.numbers || bet;
                     const hits = nums.filter(n => currentDraw.includes(n)).length;
-                    const key = nums.slice().sort((a,b)=>a-b).join(',');
+                    const isDuplicate = betCounts[nums.slice().sort((a,b)=>a-b).join(',')] > 1;
                     if (hits === 6) stats.sena++; else if (hits === 5) stats.quina++; else if (hits === 4) stats.quadra++;
-                    let bg = hits === 6 ? 'sena-bg' : hits === 5 ? 'quina-bg' : hits === 4 ? 'quadra-bg' : betCounts[key] > 1 ? 'duplicate-bg' : 'bg-gray-50';
+                    let bg = hits === 6 ? 'sena-bg' : hits === 5 ? 'quina-bg' : hits === 4 ? 'quadra-bg' : isDuplicate ? 'duplicate-bg' : 'bg-gray-50';
                     return `
                         <div class="p-1.5 rounded mb-1 ${bg} text-center">
                             <div class="text-[8px] text-gray-400 font-bold uppercase flex justify-between px-1">
                                 <span>Jogo ${idx+1} • ${hits} acertos</span>
-                                ${betCounts[key] > 1 ? '<span class="text-red-500 text-[7px] uppercase">Duplicado</span>' : ''}
+                                ${isDuplicate ? '<span class="text-red-500 text-[7px] uppercase">Duplicado</span>' : ''}
                             </div>
                             <div class="flex flex-wrap gap-1 justify-center mt-0.5">
                                 ${nums.map(n => `<span class="w-6 h-6 flex items-center justify-center rounded-full text-[10px] border ${currentDraw.includes(n) ? 'hit-number' : 'bg-white border-gray-200'}">${n.toString().padStart(2,'0')}</span>`).join('')}
