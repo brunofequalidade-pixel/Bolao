@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <title>Bolão Mega da Virada 2025</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,6 +12,11 @@
         .quadra-bg { background-color: #dbeafe; border: 2px solid #2563eb; }
         .duplicate-bg { background-color: #fee2e2; border: 2px solid #ef4444; } /* Novo estilo para duplicados */
         .hit-number { background-color: #16a34a; color: white; font-weight: bold; border-color: #16a34a; }
+        /* Estilo para as bolas do sorteio principal */
+        .draw-ball { 
+            background: radial-gradient(circle at 30% 30%, #22c55e, #15803d);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), inset -2px -2px 4px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen pb-20">
@@ -42,6 +47,14 @@
             <div class="bg-green-50 p-2 rounded border border-green-500 text-green-700"><div class="text-[10px] uppercase">Sena</div><span id="countSena">0</span></div>
             <div class="bg-yellow-50 p-2 rounded border border-yellow-500 text-yellow-700"><div class="text-[10px] uppercase">Quina</div><span id="countQuina">0</span></div>
             <div class="bg-blue-50 p-2 rounded border border-blue-500 text-blue-700"><div class="text-[10px] uppercase">Quadra</div><span id="countQuadra">0</span></div>
+        </div>
+    </div>
+
+    <div id="mainDrawDisplay" class="container mx-auto mt-6 px-4 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-green-600 text-center">
+            <h2 class="text-green-700 text-xs font-black uppercase tracking-widest mb-4">Resultado do Sorteio</h2>
+            <div id="displayBalls" class="flex flex-wrap justify-center gap-3">
+                </div>
         </div>
     </div>
 
@@ -185,6 +198,7 @@
                             count++;
                         } else {
                             skipped++;
+                            return;
                         }
                     });
 
@@ -226,8 +240,23 @@
 
         function render() {
             const container = document.getElementById('betsList');
+            const mainDrawDisplay = document.getElementById('mainDrawDisplay');
+            const displayBalls = document.getElementById('displayBalls');
+            
             container.innerHTML = '';
             
+            // ACRESCENTADO: Lógica para mostrar as dezenas sorteadas no topo
+            if (currentDraw && currentDraw.length > 0) {
+                mainDrawDisplay.classList.remove('hidden');
+                displayBalls.innerHTML = currentDraw.map(n => `
+                    <span class="draw-ball w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full text-white text-xl font-bold shadow-lg border-2 border-green-400">
+                        ${n.toString().padStart(2, '0')}
+                    </span>
+                `).join('');
+            } else {
+                mainDrawDisplay.classList.add('hidden');
+            }
+
             // Atualiza total de participantes na tela
             document.getElementById('countTotal').innerText = allParticipants.length;
 
@@ -240,7 +269,6 @@
             allParticipants.forEach(p => {
                 p.bets.forEach(b => {
                     const nums = b.numbers || b;
-                    // Cria uma chave única para o jogo (ex: "1,10,20,30,40,50")
                     const key = nums.slice().sort((a,b)=>a-b).join(',');
                     betCounts[key] = (betCounts[key] || 0) + 1;
                 });
@@ -282,13 +310,11 @@
                     const nums = bet.numbers || bet;
                     const hits = nums.filter(n => currentDraw.includes(n)).length;
                     
-                    // Verifica duplicidade usando a chave gerada anteriormente
                     const key = nums.slice().sort((a,b)=>a-b).join(',');
                     const isDuplicate = betCounts[key] > 1;
 
                     if (hits === 6) stats.sena++; else if (hits === 5) stats.quina++; else if (hits === 4) stats.quadra++;
                     
-                    // Lógica de cores: Prioriza vitória, senão verifica duplicidade
                     let bg = hits === 6 ? 'sena-bg' : 
                              hits === 5 ? 'quina-bg' : 
                              hits === 4 ? 'quadra-bg' : 
@@ -312,8 +338,6 @@
                 container.appendChild(card);
             });
 
-            console.log(`📈 Total encontrados: ${foundCount}`);
-            
             if (foundCount === 0) {
                 container.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500"><i class="fas fa-search fa-2x mb-2"></i><p>Nenhum resultado encontrado</p></div>';
             }
